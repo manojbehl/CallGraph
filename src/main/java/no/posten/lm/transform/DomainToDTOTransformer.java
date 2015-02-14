@@ -20,28 +20,28 @@ public class DomainToDTOTransformer {
 				.hasNext();) {
 			callGraphDTO =  new CallGraphDTO();
 			CallGraph callGraph = (CallGraph) iterator.next();
-			BeanUtils.copyProperties(callGraph, callGraphDTO);
+			BeanUtils.copyProperties(callGraph, callGraphDTO, new String[]{"childCallGraph"});
 			callGraphDTO.setLevel(0);
 			
-			callGrCollection.add(callGraphDTO);
-			//addChildCallGraph(callGrCollection, callGraph.getChildCallGraph(),callGraphDTO.getLevel()+1);
 			
+			addChildCallGraph(callGraphDTO, callGraph.getChildCallGraph(),callGraphDTO.getLevel()+1);
+			callGrCollection.add(callGraphDTO);
 		}
 		return callGrCollection;
 	}
 	
-	private void addChildCallGraph(Collection<CallGraphDTO> callGraphDTOs, Collection<CallGraph> callGraphs,int level){
+	private void addChildCallGraph(CallGraphDTO parentGraphDTO, Collection<CallGraph> callGraphs,int level){
 		CallGraphDTO callGraphDTO = null;
 		for (Iterator iterator = callGraphs.iterator(); iterator.hasNext();) {
 			CallGraph callGraph = (CallGraph) iterator.next();
 			callGraphDTO = new CallGraphDTO();
-			BeanUtils.copyProperties(callGraph, callGraphDTO);
+			BeanUtils.copyProperties(callGraph, callGraphDTO, new String[]{"childCallGraph"});
 			callGraphDTO.setLevel(level);
-			callGraphDTO.setParent_id(""+level);
+			callGraphDTO.setParent(""+level);
 			if(callGraph.getChildCallGraph().size() == 0)
-				callGraphDTO.setLeaf(true);
-			callGraphDTOs.add(callGraphDTO);
-			addChildCallGraph(callGraphDTOs, callGraph.getChildCallGraph(), level+1);
+				callGraphDTO.setIsLeaf("true");
+			parentGraphDTO.getChildCallGraph().add(callGraphDTO);
+			addChildCallGraph(callGraphDTO, callGraph.getChildCallGraph(), level+1);
 			
 		}
 	}

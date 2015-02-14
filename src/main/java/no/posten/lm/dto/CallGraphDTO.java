@@ -1,5 +1,10 @@
 package no.posten.lm.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import no.posten.lm.domain.CallGraph;
+
 public class CallGraphDTO {
 
 	private String id;
@@ -9,15 +14,16 @@ public class CallGraphDTO {
 	String remarks;
 	String routineName;
 	String frequency;
-	String parent_id;
+	String parent="0";
 	boolean isCodeCopy;
 	boolean isJCL =false;
 	boolean isREXX = false;
 	int level;
 	boolean loaded = true;
 	boolean expanded = true;
+	private Set<CallGraphDTO> childCallGraph = new HashSet<CallGraphDTO>();
 	
-	boolean isLeaf = false;
+	String isLeaf = "false";
 	public String getId() {
 		return id;
 	}
@@ -84,19 +90,14 @@ public class CallGraphDTO {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	public String getParent_id() {
-		return parent_id;
+	public String getParent() {
+		return parent;
 	}
-	public void setParent_id(String parent_id) {
-		this.parent_id = parent_id;
+	public void setParent(String parent) {
+		this.parent = parent;
 	}
 	
-	public boolean isLeaf() {
-		return isLeaf;
-	}
-	public void setLeaf(boolean isLeaf) {
-		this.isLeaf = isLeaf;
-	}
+	
 	public boolean isLoaded() {
 		return loaded;
 	}
@@ -115,6 +116,18 @@ public class CallGraphDTO {
 		// TODO Auto-generated method stub
 		CallGraphDTO callGraphDTO = (CallGraphDTO)obj;
 		return this.getRoutineName().equalsIgnoreCase(callGraphDTO.getRoutineName());
+	}
+	public Set<CallGraphDTO> getChildCallGraph() {
+		return childCallGraph;
+	}
+	public void setChildCallGraph(Set<CallGraphDTO> childCallGraph) {
+		this.childCallGraph = childCallGraph;
+	}
+	public String getIsLeaf() {
+		return isLeaf;
+	}
+	public void setIsLeaf(String isLeaf) {
+		this.isLeaf = isLeaf;
 	}
 	
 	
