@@ -23,9 +23,11 @@
 var _context = '<%=request.getContextPath()%>';
 	
     </script>
-		
-		<table id="tree"></table>
+		<div align="center">
+			<table id="tree"></table>
    		 <div id="pager"></div>
+		</div>
+		
 
 </body>
 </html>

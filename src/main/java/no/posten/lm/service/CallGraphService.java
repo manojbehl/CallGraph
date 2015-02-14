@@ -35,4 +35,8 @@ public class CallGraphService {
 		Collection<CallGraph> callGraphCollection = callGraphDAO.getAllCallGraph();
 		return domainToDTOTransformer.transform(callGraphCollection);
 	}
+	
+	public void update(CallGraphDTO callGraphDTO){
+		callGraphDAO.update(callGraphDTO);
+	}
 }

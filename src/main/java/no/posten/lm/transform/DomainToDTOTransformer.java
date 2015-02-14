@@ -24,7 +24,7 @@ public class DomainToDTOTransformer {
 			callGraphDTO.setLevel(0);
 			
 			callGrCollection.add(callGraphDTO);
-			addChildCallGraph(callGrCollection, callGraph.getChildCallGraph(),callGraphDTO.getLevel()+1);
+			//addChildCallGraph(callGrCollection, callGraph.getChildCallGraph(),callGraphDTO.getLevel()+1);
 			
 		}
 		return callGrCollection;

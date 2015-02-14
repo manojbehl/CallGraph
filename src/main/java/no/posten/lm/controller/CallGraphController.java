@@ -42,6 +42,8 @@ public class CallGraphController {
 	public void updateGridValue(CallGraphDTO callGraphDTO, HttpSession httpSession){
 		Collection<CallGraphDTO> callGraphCollection = (Collection<CallGraphDTO>)httpSession.getAttribute("callGraphCollection");
 		System.err.println("ffmbdjhv");
+		callGraphService.update(callGraphDTO);
+		callGraphCollection.add(callGraphDTO);
 		
 	}
 	

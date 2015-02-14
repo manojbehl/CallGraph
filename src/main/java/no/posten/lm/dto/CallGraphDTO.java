@@ -110,5 +110,12 @@ public class CallGraphDTO {
 		this.expanded = expanded;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		CallGraphDTO callGraphDTO = (CallGraphDTO)obj;
+		return this.getRoutineName().equalsIgnoreCase(callGraphDTO.getRoutineName());
+	}
+	
 	
 }
