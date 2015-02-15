@@ -9,6 +9,7 @@ import no.posten.lm.domain.CallGraph;
 import no.posten.lm.dto.CallGraphDTO;
 import no.posten.lm.transform.DTOTODomainTransformer;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -64,10 +65,10 @@ public class CallGraphDAO {
 	}
 	
 	public void update(CallGraphDTO callGraphDTO){
-		String str = "{routineName:\"" + callGraphDTO.getRoutineName() + "\"}";
+		String str = "{_id:\"" + callGraphDTO.getId() + "\"}";
 		BasicQuery basicQuery = new BasicQuery(str);
 		CallGraph callGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
-		callGraph = dtoToDomainTransformer.transform(callGraphDTO, callGraph);
+		BeanUtils.copyProperties(callGraphDTO, callGraph);
 		mongoTemplate.save(callGraph);
 		
 	}

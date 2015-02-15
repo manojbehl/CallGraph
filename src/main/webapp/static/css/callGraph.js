@@ -77,11 +77,15 @@ function loadDummyTable(){
 		    datatype: "jsonstring",
 		    height: "auto",
 		    loadui: "disable",
-		    colNames: [/*"id",*/"Items","url"],
+		    colNames: [/*"id",*/"Items","Frequency","Input","Output","Remarks"],
 		    colModel: [
 		        //{name: "id",width:1, hidden:true, key:true},
 		        {name: "routineName", width:250, resizable: false},
-		        {name: "url",width:1,hidden:true}
+		        {name:'frequency',index:'frequency', width:80, align:"center"}, 
+		        {name:'input',index:'remarks', width:80, align:"right"},
+		        {name:'output',index:'remarks', width:80, align:"right"},
+		        {name:'remarks',index:'remarks', width:80, align:"right"},
+		        
 		    ],
 		    treeGrid: true,
 		    treeGridModel: "adjacency",
@@ -147,7 +151,7 @@ function loadEmptyGrid(){
 				"width":170,
 				editable:true
 			},{
-				"name":"routineName",
+				"name":"frequency",
 				"index":"frequency",
 				"sorttype":"string",
 				"label":"Frequency",
@@ -201,7 +205,7 @@ function loadEmptyGrid(){
 		"treeGrid":false,
 		"treedatatype":"json",
 		"treeGridModel":"nested",
-		"loadonce":false,
+		"loadonce":true,
 		rowNum:10, 
 		rowList:[10,20,30],
 //		treeReader:{
@@ -212,6 +216,15 @@ function loadEmptyGrid(){
 //			loaded:"loaded",
 //			icon_field:"icon"
 //		},
+		jsonReader : {
+			root: "rows",
+			page: "page",
+			total: "total",
+			records: "records",
+			repeatitems: false,
+			cell: "cell",
+			id: "id"
+			} ,
 		"datatype":"json",
 		"pager":"#pager",
 		caption: "Full control",
@@ -225,15 +238,16 @@ function loadEmptyGrid(){
 	jQuery('#tree').jqGrid('navGrid','#pager',
 			{
 				"edit":true,
-				"add":true,
-				"del":true,
+				"add":false,
+				"del":false,
 				"search":true,
-				"refresh":true,
+				"refresh":false,
 				"view":true,
-				"excel":true,
-				"pdf":true,
-				"csv":true,
-				"columns":false
+				"excel":false,
+				"pdf":false,
+				"csv":false,
+				"columns":false,
+				
 			},
 			{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150},
 			{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150}

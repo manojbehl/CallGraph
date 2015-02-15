@@ -5,7 +5,7 @@ import java.util.Set;
 
 import no.posten.lm.domain.CallGraph;
 
-public class CallGraphDTO {
+public class CallGraphDTO implements Comparable<CallGraphDTO>{
 
 	private String id;
 	String programOverview;
@@ -14,13 +14,18 @@ public class CallGraphDTO {
 	String remarks;
 	String routineName;
 	String frequency;
-	String parent="0";
+	String parent="";
 	boolean isCodeCopy;
 	boolean isJCL =false;
 	boolean isREXX = false;
 	int level;
 	boolean loaded = true;
 	boolean expanded = true;
+	
+	private int page;
+	private int max;
+	private int total;
+	
 	private Set<CallGraphDTO> childCallGraph = new HashSet<CallGraphDTO>();
 	
 	String isLeaf = "false";
@@ -128,6 +133,35 @@ public class CallGraphDTO {
 	}
 	public void setIsLeaf(String isLeaf) {
 		this.isLeaf = isLeaf;
+	}
+	public int compareTo(CallGraphDTO o) {
+		// TODO Auto-generated method stub
+		Integer first = Integer.parseInt(this.getId());
+		Integer second = Integer.parseInt(o.getId());
+		if(first < second)
+			return -1;
+		else if (first > second)
+			return 1;
+		else 
+			return 0;
+		}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getMax() {
+		return max;
+	}
+	public void setMax(int max) {
+		this.max = max;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
 	}
 	
 	

@@ -241,9 +241,9 @@ public class ParseExcel {
 	public Map<String, Map<String, CallGraph>> parseExcelFile(){
 		try {
 			Workbook workbook = Workbook.getWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph11.xls"));
-			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM1"));
-			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM1"), hashMap);
-			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM1"), hashMap);
+			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM"));
+			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM"), hashMap);
+			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM"), hashMap);
 			return hashMap;
 			
 			

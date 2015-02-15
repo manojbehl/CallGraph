@@ -2,8 +2,11 @@ package no.posten.lm.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import no.posten.lm.dto.CallGraphDTO;
@@ -33,8 +36,10 @@ public class CallGraphController {
 	
 	@RequestMapping(value="/load",method=RequestMethod.GET)
 	@ResponseBody
-	public Collection<CallGraphDTO> loadDataWithCallGraph(Model model, HttpSession httpSession){
+	public Collection<CallGraphDTO> loadDataWithCallGraph(Model model, HttpSession httpSession,@RequestParam int rows,
+															@RequestParam int page,HttpServletResponse response){
 		Collection<CallGraphDTO> callGraphCollection= callGraphService.loadGraph();
+		Collections.sort((List)callGraphCollection);
 		httpSession.setAttribute("callGraphCollection", callGraphCollection);
 		return callGraphCollection;
 		
@@ -84,6 +89,12 @@ public class CallGraphController {
 		sb.append("{");
 		sb.append("\"id\":\""+mainObject.getId()+"\",");
 		sb.append("\"routineName\":\""+mainObject.getRoutineName()+"\",");
+		sb.append("\"frequency\":\""+mainObject.getFrequency()+"\",");
+		sb.append("\"input\":\""+mainObject.getInput()+"\",");
+		sb.append("\"output\":\""+mainObject.getOutput()+"\",");
+		sb.append("\"remarks\":\""+mainObject.getRemarks()+"\",");
+		
+		
 		sb.append("level:\""+mainObject.getLevel()+"\",");
 		sb.append("parent:\""+mainObject.getParent()+"\",");
 		sb.append("isLeaf:"+mainObject.getIsLeaf().equalsIgnoreCase("true")+",");
@@ -109,9 +120,13 @@ public class CallGraphController {
 	@ResponseBody
 	public void updateGridValue(CallGraphDTO callGraphDTO, HttpSession httpSession){
 		Collection<CallGraphDTO> callGraphCollection = (Collection<CallGraphDTO>)httpSession.getAttribute("callGraphCollection");
-		System.err.println("ffmbdjhv");
+		System.err.println(callGraphCollection.size());
 		callGraphService.update(callGraphDTO);
+		callGraphCollection.remove(callGraphDTO);
 		callGraphCollection.add(callGraphDTO);
+		System.err.println(callGraphCollection.size());
+		Collections.sort((List)callGraphCollection);
+		httpSession.setAttribute("callGraphCollection", callGraphCollection);
 		
 	}
 	
