@@ -1,9 +1,10 @@
 /**
  * 
  */
+var subChildData = null;
 function loadDummyTable(){
-	var topicjson11 ={"response": [{"id":"54df0ce70364853700354912","routineName":"PDJA016B",level:"0",parent:"",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BJAC027A",level:"1",parent:"1",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM25",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM23",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM31",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},]}
-	var topicjson =
+	var topicjson ={"response": [{"id":"54df0ce70364853700354912","routineName":"PDJA016B",level:"0",parent:"0",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BJAC027A",level:"1",parent:"1",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM31",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM23",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM25",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},]}
+	var topicjson11 =
 	{
 			"response":
 				[
@@ -12,20 +13,20 @@ function loadDummyTable(){
 					 level:"0",parent:"",isLeaf:false,expanded:true,loaded:true
 				},
 				{
-					 "id":"1_1","routineName":"BJAC027A",
+					 "id":"101","routineName":"BJAC027A",
 					 level:"1",parent:"1",isLeaf:false,expanded:true,loaded:true
 				},
 				{
-						"id":"1_1_1","routineName":"BQMQFM25",
-						level:"2",parent:"1_1",isLeaf:true,expanded:true,loaded:true
+						"id":"201","routineName":"BQMQFM25",
+						level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
 				},
 				{
-						"id":"1_1_2","routineName":"BQMQFM23",
-						level:"2",parent:"1_1",isLeaf:true,expanded:true,loaded:true
+						"id":"202","routineName":"BQMQFM23",
+						level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
 				},
 				{	
-					"id":"1_1_3","routineName":"BQMQFM31",
-					level:"2",parent:"1_1",isLeaf:true,expanded:true,loaded:true
+					"id":"203","routineName":"BQMQFM31",
+					level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
 				},
 				]
 	}
@@ -72,7 +73,7 @@ function loadDummyTable(){
 
 		grid = jQuery("#remoteinfinite");
 		grid.jqGrid({
-		    datastr: topicjson,
+		    datastr: subChildData,
 		    datatype: "jsonstring",
 		    height: "auto",
 		    loadui: "disable",
@@ -88,6 +89,7 @@ function loadDummyTable(){
 		    ExpandColumn: "routineName",
 		    //autowidth: true,
 		    rowNum: 10000,
+		    
 		    //ExpandColClick: true,
 		    treeIcons: {leaf:'ui-icon-document-b'},
 		    jsonReader: {
@@ -271,28 +273,29 @@ function populateAdditionalInfo(reqId,reqType){
 		 
 		 
 		 
-		 var cellValue = jQuery("#tree").jqGrid ('getCell', selRowId, 'routineName');
+		 var cellValue = jQuery("#tree").jqGrid ('getCell', selRowId, 'id');
+		 $("#remoteinfinite").jqGrid("clearGridData", true).trigger("reloadGrid");
 		 jQuery.ajax(
 				 {
-					 url: _context+"/loadChild?jclProgramName="+cellValue, 
+					 url: _context+"/loadChild?id="+cellValue, 
 					 success: function(result){
-//						 var topicjson = result.toString();
+						  subChildData = result.toString();
 //						 grid = jQuery("#remoteinfinite");
 //							grid.jqGrid({
-//							    datastr: topicjson,
+//							    datastr: resultSet,
 //							    datatype: "jsonstring",
 //							    height: "auto",
 //							    loadui: "disable",
 //							    colNames: [/*"id",*/"Items","url"],
 //							    colModel: [
 //							        //{name: "id",width:1, hidden:true, key:true},
-//							        {name: "elementName", width:250, resizable: false},
+//							        {name: "routineName", width:250, resizable: false},
 //							        {name: "url",width:1,hidden:true}
 //							    ],
 //							    treeGrid: true,
 //							    treeGridModel: "adjacency",
 //							    caption: "jqGrid Demos",
-//							    ExpandColumn: "elementName",
+//							    ExpandColumn: "routineName",
 //							    //autowidth: true,
 //							    rowNum: 10000,
 //							    //ExpandColClick: true,
@@ -302,8 +305,9 @@ function populateAdditionalInfo(reqId,reqType){
 //							        root: "response"
 //							    }
 //							});
+						  // reload Grid for datastr instead of URL value
+						  $("#remoteinfinite").setGridParam({datastr: subChildData,datatype: "jsonstring"}).trigger('reloadGrid');
 						 
-						 $("#remoteinfinite").trigger("reloadGrid");
 						 
 					 }
 				 });

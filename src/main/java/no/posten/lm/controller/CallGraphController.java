@@ -42,7 +42,7 @@ public class CallGraphController {
 	
 	@RequestMapping(value="/loadChild",method=RequestMethod.GET)
 	@ResponseBody
-	public String loadChildGraph(@RequestParam String jclProgramName, HttpSession httpSession){
+	public String loadChildGraph(@RequestParam String id, HttpSession httpSession){
 		Collection<CallGraphDTO> callGraphCollection = (Collection<CallGraphDTO>)httpSession.getAttribute("callGraphCollection");
 		if(callGraphCollection == null){
 			callGraphCollection= callGraphService.loadGraph();
@@ -50,10 +50,12 @@ public class CallGraphController {
 		}
 		
 		CallGraphDTO callGraphDTO = new CallGraphDTO();
-		callGraphDTO.setRoutineName(jclProgramName);
+		callGraphDTO.setId(id);
 		
 		int index=  ((ArrayList<CallGraphDTO>)callGraphCollection).indexOf(callGraphDTO);
 		CallGraphDTO mainObject =  ((ArrayList<CallGraphDTO>)callGraphCollection).get(index);
+		
+//		Collection<CallGraphDTO> callGraphDTOs = callGraphService.loadChilds(id);
 		
 //		Collection<CallGraphDTO> finalizeCallGraphDTOs = new ArrayList<CallGraphDTO>();
 //		return breakupChildIntoSeperateRecords(((ArrayList<CallGraphDTO>)callGraphCollection).get(index).getChildCallGraph(),finalizeCallGraphDTOs);
@@ -62,12 +64,15 @@ public class CallGraphController {
 		populateTreeData(mainObject, sb);
 		sb.append("]}");
 		return sb.toString();
+		
+		
 	}
 	
 	private String populateTreeData(CallGraphDTO mainObject,StringBuffer sb){
 		
 		loadEntries(sb, mainObject);
-		for (Iterator iterator = mainObject.getChildCallGraph().iterator(); iterator.hasNext();) {
+		Collection<CallGraphDTO> callGraphDTOs = callGraphService.loadChilds(mainObject.getId());
+		for (Iterator iterator = callGraphDTOs.iterator(); iterator.hasNext();) {
 			CallGraphDTO type = (CallGraphDTO) iterator.next();
 			populateTreeData(type, sb);
 			

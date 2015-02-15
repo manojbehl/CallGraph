@@ -2,17 +2,18 @@ package no.posten.lm.domain;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.mongodb.util.Hash;
-
+@Document
 public class CallGraph {
 
+	public static final String PATH_SEPARATOR = ".";
 	
 	private String id;
 	String programOverview;
@@ -24,11 +25,27 @@ public class CallGraph {
 	boolean isCodeCopy;
 	boolean isJCL =false;
 	boolean isREXX = false;
+	@Field String path;
+	@Field String parent="";
+	int level;
+	boolean loaded = true;
+	boolean expanded = true;
+	String isLeaf = "false";
+	
+	public CallGraph() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public CallGraph(int id){
+		this.id = "" +id;
+	}
+	
+	
 
 	@Transient
 	Map<String, CallGraph> childRoutine = new HashMap<String, CallGraph>();
 	
-	
+	@Transient
 	private Set<CallGraph> childCallGraph = new HashSet<CallGraph>();
 	
 	public Set<CallGraph> getChildCallGraph() {
@@ -132,5 +149,55 @@ public class CallGraph {
 	public void setChildRoutine(Map<String, CallGraph> childRoutine) {
 		this.childRoutine = childRoutine;
 	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public boolean isLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(boolean loaded) {
+		this.loaded = loaded;
+	}
+
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
+	public String getIsLeaf() {
+		return isLeaf;
+	}
+
+	public void setIsLeaf(String isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+
+	
 	
 }

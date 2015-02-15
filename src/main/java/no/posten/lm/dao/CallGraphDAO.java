@@ -12,6 +12,8 @@ import no.posten.lm.transform.DTOTODomainTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -42,6 +44,23 @@ public class CallGraphDAO {
 //		BasicQuery query = new BasicQuery("{ routineName : \"BJAC001\"}");
 //		return mongoTemplate.find(query, CallGraph.class);
 		return mongoTemplate.findAll(CallGraph.class);
+	}
+	
+	public Collection<CallGraph> loadChild(String id){
+//		CallGraph parentCallGraph = mongoTemplate.findById(id, CallGraph.class);
+		Collection<CallGraph> callGrCollection   =mongoTemplate.find( 
+								Query.query( new Criteria( "path" ).regex( "^" + id + "[.]" ) ),
+					                CallGraph.class
+					            );
+		return callGrCollection;
+//		for (Iterator iterator = childCallGraphCollection.iterator(); iterator
+//				.hasNext();) {
+//			CallGraph callGraph = (CallGraph) iterator.next();
+//			String path = callGraph.getPath().substring(0,callGraph.getPath().lastIndexOf(CallGraph.PATH_SEPARATOR));
+//			
+//		}
+//		
+//		return 
 	}
 	
 	public void update(CallGraphDTO callGraphDTO){

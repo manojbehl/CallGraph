@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import jxl.Workbook;
@@ -120,6 +121,8 @@ public class ProcessCallGraph {
 		while(iterator.hasNext()){
 			String child = iterator.next();
 			CallGraph callGraph =  childMap.get(child);
+			CallGraph childCallGraph = new CallGraph();
+			BeanUtils.copyProperties(callGraph, childCallGraph, new String[]{"childCallGraph","childRoutine"});
 			jclCallGraph.getChildCallGraph().add(callGraph);
 			if(callGraph.isCodeCopy()){
 				child +=  "  - Code Copy";

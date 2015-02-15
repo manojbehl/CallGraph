@@ -13,15 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DomainToDTOTransformer {
 
-	public Collection<CallGraphDTO> transform(Collection<CallGraph> callGraphCollection){
+	public Collection<CallGraphDTO> transform(Collection<CallGraph> callGraphCollection, boolean loadParentOnly){
 		Collection<CallGraphDTO> callGrCollection = new ArrayList<CallGraphDTO>();
 		CallGraphDTO callGraphDTO = null;
 		for (Iterator iterator = callGraphCollection.iterator(); iterator
 				.hasNext();) {
-			callGraphDTO =  new CallGraphDTO();
 			CallGraph callGraph = (CallGraph) iterator.next();
+			if(loadParentOnly && (callGraph.getParent().trim().length() > 0 || callGraph.getPath().indexOf(".") != -1))
+				continue;
+			callGraphDTO =  new CallGraphDTO();
 			BeanUtils.copyProperties(callGraph, callGraphDTO, new String[]{"childCallGraph"});
-			callGraphDTO.setLevel(0);
+//			callGraphDTO.setLevel(0);
 			
 			
 			addChildCallGraph(callGraphDTO, callGraph.getChildCallGraph(),callGraphDTO.getLevel()+1);
@@ -36,10 +38,10 @@ public class DomainToDTOTransformer {
 			CallGraph callGraph = (CallGraph) iterator.next();
 			callGraphDTO = new CallGraphDTO();
 			BeanUtils.copyProperties(callGraph, callGraphDTO, new String[]{"childCallGraph"});
-			callGraphDTO.setLevel(level);
-			callGraphDTO.setParent(""+level);
-			if(callGraph.getChildCallGraph().size() == 0)
-				callGraphDTO.setIsLeaf("true");
+//			callGraphDTO.setLevel(level);
+//			callGraphDTO.setParent(""+level);
+//			if(callGraph.getChildCallGraph().size() == 0)
+//				callGraphDTO.setIsLeaf("true");
 			parentGraphDTO.getChildCallGraph().add(callGraphDTO);
 			addChildCallGraph(callGraphDTO, callGraph.getChildCallGraph(), level+1);
 			

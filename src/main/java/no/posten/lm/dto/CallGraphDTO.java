@@ -115,7 +115,7 @@ public class CallGraphDTO {
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		CallGraphDTO callGraphDTO = (CallGraphDTO)obj;
-		return this.getRoutineName().equalsIgnoreCase(callGraphDTO.getRoutineName());
+		return this.getId().equalsIgnoreCase(callGraphDTO.getId());
 	}
 	public Set<CallGraphDTO> getChildCallGraph() {
 		return childCallGraph;
