@@ -89,10 +89,10 @@ public class CallGraphController {
 		sb.append("{");
 		sb.append("\"id\":\""+mainObject.getId()+"\",");
 		sb.append("\"routineName\":\""+mainObject.getRoutineName()+"\",");
-		sb.append("\"frequency\":\""+mainObject.getFrequency()+"\",");
-		sb.append("\"input\":\""+mainObject.getInput()+"\",");
-		sb.append("\"output\":\""+mainObject.getOutput()+"\",");
-		sb.append("\"remarks\":\""+mainObject.getRemarks()+"\",");
+		sb.append("\"frequency\":\""+(mainObject.getFrequency()==null?"":mainObject.getFrequency())+"\",");
+		sb.append("\"input\":\""+(mainObject.getInput()==null?"":mainObject.getInput())+"\",");
+		sb.append("\"output\":\""+(mainObject.getOutput()==null?"":mainObject.getOutput())+"\",");
+		sb.append("\"remarks\":\""+(mainObject.getRemarks()==null?"":mainObject.getRemarks())+"\",");
 		
 		
 		sb.append("level:\""+mainObject.getLevel()+"\",");
