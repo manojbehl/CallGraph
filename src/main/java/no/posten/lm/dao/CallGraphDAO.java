@@ -29,7 +29,15 @@ public class CallGraphDAO {
 	DTOTODomainTransformer dtoToDomainTransformer;
 	
 	public void InsertData(Collection<CallGraph> callGraphObList){
-		mongoTemplate.insertAll(callGraphObList);
+		for (Iterator iterator = callGraphObList.iterator(); iterator.hasNext();) {
+			CallGraph callGraph = (CallGraph) iterator.next();
+			String str = "{routineName:\"" + callGraph.getRoutineName() + "\", type:\"" + callGraph.getType() + "\"}";
+			BasicQuery basicQuery = new BasicQuery(str);
+			CallGraph exsitingCallGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
+			if(exsitingCallGraph == null)
+				mongoTemplate.insert(callGraph);
+		}
+//		mongoTemplate.insertAll(callGraphObList);
 //		for (Iterator iterator = callGraphObList.iterator(); iterator.hasNext();) {
 //			CallGraph callGraph = (CallGraph) iterator.next();
 //			Set<CallGraph> setCallGraphs =  callGraph.getChildCallGraph();
@@ -37,6 +45,12 @@ public class CallGraphDAO {
 //			mongoTemplate.insert(callGraph);
 //		}
 		
+	}
+	
+	public Collection<CallGraph> getParentChildGraphs(){
+		String str = "{parent:\"\", type:\"JCL\"}";
+		BasicQuery basicQuery = new BasicQuery(str);
+		return mongoTemplate.find(basicQuery, CallGraph.class);
 	}
 	
 	

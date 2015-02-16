@@ -45,6 +45,13 @@ public class CallGraphController {
 		
 	}
 	
+	
+	@RequestMapping(value="/writeExcel",method=RequestMethod.GET)
+	@ResponseBody
+	public void loadDataWithCallGraph(@RequestParam String filePath){
+		callGraphService.exportToExcel(filePath);
+	}
+	
 	@RequestMapping(value="/loadChild",method=RequestMethod.GET)
 	@ResponseBody
 	public String loadChildGraph(@RequestParam String id, HttpSession httpSession){

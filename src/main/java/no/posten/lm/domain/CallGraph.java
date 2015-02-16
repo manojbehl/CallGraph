@@ -31,7 +31,16 @@ public class CallGraph {
 	boolean loaded = true;
 	boolean expanded = true;
 	String isLeaf = "false";
+	String type ;
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public CallGraph() {
 		// TODO Auto-generated constructor stub
 	}

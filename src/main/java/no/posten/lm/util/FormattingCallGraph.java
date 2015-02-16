@@ -28,6 +28,7 @@ public class FormattingCallGraph {
 			formattedCallGraph.setId(""+counter++);
 			formattedCallGraph.setPath(formattedCallGraph.getId());
 			formattedCallGraph.setLevel(0);
+			formattedCallGraph.setType("JCL");
 //			counter = counter +1;
 			
 			formattedCallGraphList.add(formattedCallGraph);
@@ -50,6 +51,7 @@ public class FormattingCallGraph {
 			formattedCallGraph.setPath(parentCallGraph.getPath() + CallGraph.PATH_SEPARATOR + formattedCallGraph.getId());
 			formattedCallGraph.setParent(parentCallGraph.getId());
 			formattedCallGraph.setLevel(level);
+			formattedCallGraph.setType("SUB");
 //			counter = counter +1;
 			
 			if(childCallGraph.getChildCallGraph().size() == 0)
