@@ -71,7 +71,15 @@ public class CallGraphService {
 	public void exportToExcel(String filePath){
 
 		Collection<CallGraph> allCallGraphObjects = callGraphDAO.getParentChildGraphs();
-		writeExcel(filePath, prepareCallGraphHierarchy(allCallGraphObjects));
+		try {
+			writeExcel(filePath, prepareCallGraphHierarchy(allCallGraphObjects));
+		} catch (WriteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -108,99 +116,115 @@ public class CallGraphService {
 	
 	
 	
-	private void writeExcel(String filePath, Collection<CallGraph> listOfCallGraph){
-		System.err.println("asfdsfhfjasgfjasd");
-////		Set<String> setOfJCLProgram=  hashMap.keySet();
-//		Iterator<String> iterator=  setOfJCLProgram.iterator();
-//		WritableWorkbook workbook = null;
-//		try {
-////			 workbook = Workbook.createWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph_output.xls"));
-//			 workbook = Workbook.createWorkbook(new File("C:/workspace/CallGraph/Call_Graph_output.xls"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		WritableSheet sheet = workbook.createSheet("Output", 0);
-//		int col =1;
-//		Integer row = 1;
-//		String jclProgram= null;
-//		Map<String, CallGraph> childMap= null;
-//		Label label = null;
-//		WritableFont  wfontStatus = new WritableFont(WritableFont.createFont("Arial"), WritableFont.DEFAULT_POINT_SIZE, WritableFont.BOLD, false);
-//		 WritableCellFormat fCellstatus = new WritableCellFormat(wfontStatus);
-////	    fCellstatus.setWrap(true);
-//	    fCellstatus.setBackground(Colour.BROWN);
-//	    fCellstatus.setAlignment(jxl.format.Alignment.CENTRE);
-//	    fCellstatus.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
-////	    fCellstatus.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.MEDIUM, jxl.format.Colour.BLUE2);
-//		
-//		label = new Label(0,0,"Type", fCellstatus);
-//		sheet.addCell(label);
-//		label = new Label(1,0,"JCL Program", fCellstatus);
-//		sheet.addCell(label);
-//		label = new Label(2,0,"Program1", fCellstatus);
-//		sheet.addCell(label);
-//		label = new Label(3,0,"Program2", fCellstatus);
-//		sheet.addCell(label);
-//		label = new Label(4,0,"Program3", fCellstatus);
-//		sheet.addCell(label);
-////		WritableCellFormat fCellstatusForJCL  = fCellstatus;
-////	    fCellstatusForJCL.setBackground(Colour.LIGHT_BLUE);
-////	    WritableCellFormat fCellstatusForSub  = fCellstatus;
-////	    WritableCellFormat fCellstatusForCopy  = fCellstatus;
-//		Set<CallGraph> jclCallGraph = new HashSet<CallGraph>();
-//		CallGraph callGraph = null;
-//		while(iterator.hasNext()){
-//			 jclProgram= iterator.next();
-//			 callGraph = new CallGraph();
-//			 callGraph.setJCL(true);
-//			 callGraph.setRoutineName(jclProgram);
-//			 int column = col;
-//			 int rowvalue =  row++;
-//			label = new Label(column,rowvalue,jclProgram);
-//			sheet.addCell(label);
-//			childMap = hashMap.get(jclProgram);
+	private void writeExcel(String filePath, Collection<CallGraph> listOfCallGraph) throws WriteException, IOException{
+
+		WritableWorkbook workbook = null;
+		try {
+//			 workbook = Workbook.createWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph_output.xls"));
+			 workbook = Workbook.createWorkbook(new File(filePath));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		WritableSheet sheet = workbook.createSheet("Output", 0);
+		int col =1;
+		Integer row = 1;
+		CallGraph jclProgram= null;
+		Set<CallGraph> childMap= null;
+		Label label = null;
+		WritableFont  wfontStatus = new WritableFont(WritableFont.createFont("Arial"), WritableFont.DEFAULT_POINT_SIZE, WritableFont.BOLD, false);
+		 WritableCellFormat fCellstatus = new WritableCellFormat(wfontStatus);
+//	    fCellstatus.setWrap(true);
+	    fCellstatus.setBackground(Colour.BROWN);
+	    fCellstatus.setAlignment(jxl.format.Alignment.CENTRE);
+	    fCellstatus.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
+//	    fCellstatus.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.MEDIUM, jxl.format.Colour.BLUE2);
+		
+		label = new Label(0,0,"Type", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(1,0,"JCL Program", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(2,0,"Program1", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(3,0,"Program2", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(4,0,"Program3", fCellstatus);
+		sheet.addCell(label);
+
+		
+		label = new Label(5,0,"Frequency", fCellstatus);
+		sheet.addCell(label);
+
+		label = new Label(6,0,"Input", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(7,0,"Output", fCellstatus);
+		sheet.addCell(label);
+		label = new Label(8,0,"Remarks", fCellstatus);
+		sheet.addCell(label);
+		
+
+//		WritableCellFormat fCellstatusForJCL  = fCellstatus;
+//	    fCellstatusForJCL.setBackground(Colour.LIGHT_BLUE);
+//	    WritableCellFormat fCellstatusForSub  = fCellstatus;
+//	    WritableCellFormat fCellstatusForCopy  = fCellstatus;
+		Set<CallGraph> jclCallGraph = new HashSet<CallGraph>();
+		CallGraph callGraph = null;
+		Iterator<CallGraph> iterator = listOfCallGraph.iterator();
+		while(iterator.hasNext()){
+			 jclProgram= iterator.next();
+			 int column = col;
+			 int rowvalue =  row++;
+			label = new Label(column,rowvalue,jclProgram.getRoutineName());
+			sheet.addCell(label);
+			
+			label = new Label(5,rowvalue,jclProgram.getFrequency());
+			sheet.addCell(label);
+			label = new Label(6,rowvalue,jclProgram.getInput());
+			sheet.addCell(label);
+			label = new Label(7,rowvalue,jclProgram.getOutput());
+			sheet.addCell(label);
+			label = new Label(8,rowvalue,jclProgram.getRemarks());
+			sheet.addCell(label);
+			
+			childMap = jclProgram.getChildCallGraph();
 //			if(!childMap.isEmpty()){
-//				CallGraph[] callGraphChild=   childMap.values().toArray(new CallGraph[]{});
-//				if(callGraphChild[0].isJCL()){
+//				HashSet<CallGraph> callGraphs = (HashSet<CallGraph>)childMap;
+//				if(callGraphs.){
 //					label = new Label(0,rowvalue,"JCL");
 //					sheet.addCell(label);
 //				}
 //			}
-//			int startRow = row;
-//			row = writeChildExcel(childMap, row, col+1, sheet,callGraph);
-//			//sheet.mergeCells(startRow, row,1, 1);
-//			jclCallGraph.add(callGraph);
-//		}
-//		workbook.write();
-//		workbook.close();
+			int startRow = row;
+			row = writeChildExcel(childMap, row, col+1, sheet,callGraph);
+			//sheet.mergeCells(startRow, row,1, 1);
+			jclCallGraph.add(callGraph);
+		}
+		workbook.write();
+		workbook.close();
 	}
 	
-	private int writeChildExcel(Map<String, CallGraph> childMap, Integer row, int col, WritableSheet sheet, CallGraph jclCallGraph) throws RowsExceededException, WriteException{
-		Iterator<String> iterator = childMap.keySet().iterator();
+	private int writeChildExcel(Collection<CallGraph> childGraphList, Integer row, int col, WritableSheet sheet, CallGraph jclCallGraph) throws RowsExceededException, WriteException{
+		Iterator<CallGraph> iterator = childGraphList.iterator();
 		Label label = null;
 		while(iterator.hasNext()){
-			String child = iterator.next();
-			CallGraph callGraph =  childMap.get(child);
-			CallGraph childCallGraph = new CallGraph();
-			BeanUtils.copyProperties(callGraph, childCallGraph, new String[]{"childCallGraph","childRoutine"});
-			jclCallGraph.getChildCallGraph().add(callGraph);
-			if(callGraph.isCodeCopy()){
-				child +=  "  - Code Copy";
+			CallGraph child = iterator.next();
+			String childSubProgram = child.getRoutineName();
+			if(child.isCodeCopy()){
+				childSubProgram +=  "  - Code Copy";
 			}
-			else if(callGraph.isREXX()){
-				child +=  "  - REXX";
+			else if(child.isREXX()){
+				childSubProgram +=  "  - REXX";
 			}else{
 				
-				child +=  "  - Sub Program";
+				childSubProgram +=  "  - Sub Program";
 			}
 			
 			
 			
-			label = new Label(col,row++,child);
+			label = new Label(col,row++,childSubProgram);
 			sheet.addCell(label);
 			 
-			row = writeChildExcel(callGraph.getChildRoutine(), row, col+1, sheet,callGraph);
+			row = writeChildExcel(child.getChildCallGraph(), row, col+1, sheet,child);
 		}
 		return row;
 	}

@@ -242,11 +242,12 @@ function loadEmptyGrid(){
 				"add":false,
 				"del":false,
 				"search":true,
+				"csv":true,
 				"refresh":false,
 				"view":true,
-				"excel":false,
+				"excel":true,
 				"pdf":false,
-				"csv":false,
+				
 				"columns":false,
 				
 			},
