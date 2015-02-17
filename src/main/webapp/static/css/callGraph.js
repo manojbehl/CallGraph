@@ -27,6 +27,7 @@ function loadDummyTable(){
 		    ExpandColumn: "routineName",
 		    //autowidth: true,
 		    rowNum: 10000,
+		    "pager":"#pager",
 		    
 		    //ExpandColClick: true,
 		    treeIcons: {leaf:'ui-icon-document-b'},
@@ -35,6 +36,9 @@ function loadDummyTable(){
 		        root: "response"
 		    }
 		});
+		
+		jQuery("#remoteinfinite")
+		.navGrid('#pager',{edit:true,add:true,del:false,search:false, csv:true})
 }
 
 
@@ -65,6 +69,8 @@ function loadTreeGrid(){
 						              
 						           }
 					});
+		
+		
 }
 
 function loadEmptyGrid(){
@@ -130,8 +136,9 @@ function loadEmptyGrid(){
 		"hoverrows":true,
 		"viewrecords":true,
 		"gridview":true,
-		"url":"/CallGraph/load",
-		"editurl" : "/CallGraph/update",
+		"url":_context + "/load",
+		"editurl" : _context + "/update",
+		"addurl":_context + "/add",
 		"ExpandColumn":"name",
 		"height":"300",
 		"sortname":"routineName",
@@ -173,7 +180,7 @@ function loadEmptyGrid(){
 
 	
 	jQuery("#tree")
-	.navGrid('#pager',{edit:true,add:false,del:false,search:true, csv:true})
+	.navGrid('#pager',{edit:true,add:true,del:false,search:true, csv:true})
 	.navButtonAdd('#pager',{
 	   caption:"Export To Excel", 
 //	   buttonicon:"ui-icon-add", 
@@ -216,7 +223,11 @@ function loadEmptyGrid(){
 //	        });
 	   }, 
 	   position:"last"
-	});
+	},
+	{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150},
+	{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150}
+
+	);
 	
 }
 
@@ -267,6 +278,6 @@ $(document).ready(function() {
 	loadDummyTable();
 	 loadEmptyGrid();
 	 loadTableData();
-	 loadTreeGrid();
+//	 loadTreeGrid();
 	 
 });
