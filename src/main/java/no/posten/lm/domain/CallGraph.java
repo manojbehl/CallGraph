@@ -17,6 +17,7 @@ public class CallGraph {
 	
 	private String id;
 	String programOverview;
+	String parentRoutineName;
 	String input;
 	String output;
 	String remarks;
@@ -32,6 +33,16 @@ public class CallGraph {
 	boolean expanded = true;
 	String isLeaf = "false";
 	String type ;
+	
+	
+	public String getParentRoutineName() {
+		return parentRoutineName;
+	}
+
+	public void setParentRoutineName(String parentRoutineName) {
+		this.parentRoutineName = parentRoutineName;
+	}
+
 	
 	public String getType() {
 		return type;
