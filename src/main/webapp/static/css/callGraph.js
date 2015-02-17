@@ -4,73 +4,7 @@
 var subChildData = null;
 function loadDummyTable(){
 	var topicjson ={"response": [{"id":"54df0ce70364853700354912","routineName":"PDJA016B",level:"0",parent:"0",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BJAC027A",level:"1",parent:"1",isLeaf:false,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM31",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM23",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},{"id":"null","routineName":"BQMQFM25",level:"2",parent:"2",isLeaf:true,expanded:true,loaded:true},]}
-	var topicjson11 =
-	{
-			"response":
-				[
-				 {
-					 	"id":"1","routineName":"PDJA016B",
-					 level:"0",parent:"",isLeaf:false,expanded:true,loaded:true
-				},
-				{
-					 "id":"101","routineName":"BJAC027A",
-					 level:"1",parent:"1",isLeaf:false,expanded:true,loaded:true
-				},
-				{
-						"id":"201","routineName":"BQMQFM25",
-						level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
-				},
-				{
-						"id":"202","routineName":"BQMQFM23",
-						level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
-				},
-				{	
-					"id":"203","routineName":"BQMQFM31",
-					level:"2",parent:"101",isLeaf:true,expanded:true,loaded:true
-				},
-				]
-	}
-	var topicjson1={
-			
-			
-			
-		    "response": [
-		           {
-		               "id": "1",
-		               "elementName": "Grouping",
-		               level:"0", parent:"", isLeaf:false, expanded:false, loaded:true
-		           },
-		           {
-		               "id": "1_1",
-		               "elementName": "Simple Grouping",
-		               level:"1", parent:"1", isLeaf:true, expanded:false, loaded:true
-		           },
-		           {
-		               "id": "1_2",
-		               "elementName": "May be some other grouping",
-		               level:"1", parent:"1", isLeaf:true, expanded:false, loaded:true
-		           },
-		           {
-		               "id": "2",
-		               "elementName": "CustomFormater",
-		               level:"0", parent:"", isLeaf:false, expanded:true, loaded:true
-		           },
-		           {
-		               "id": "2_1",
-		               "elementName": "Image Formatter",
-		               level:"1", parent:"2", isLeaf:true, expanded:false, loaded:true
-		           },
-		           {
-		               "id": "2_1",
-		               "elementName": "Anchor Formatter",
-		               level:"1", parent:"2", isLeaf:true, expanded:false, loaded:true
-		           }
-		       ]
-		    }
-		   
-
-		
-
+	
 		grid = jQuery("#remoteinfinite");
 		grid.jqGrid({
 		    datastr: subChildData,
@@ -236,58 +170,43 @@ function loadEmptyGrid(){
 		
 	});
 	
-	jQuery('#tree').jqGrid('navGrid','#pager',
-			{
-				"edit":true,
-				"add":false,
-				"del":false,
-				"search":true,
-				"csv":true,
-				"refresh":false,
-				"view":true,
-				"excel":true,
-				"pdf":false,
-				
-				"columns":false,
-				
-			},
-			{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150},
-			{"drag":true,"resize":true,"closeOnEscape":true,"dataheight":150}
-			);
-			jQuery('#tree').jqGrid('bindKeys');
-//			jQuery("#tree").jqGrid('filterToolbar',{searchOperators : true});
-		// set the width of the grid
-//		jQuery("#tree").jqGrid('setGridWidth', '800');
-//		jQuery("#tree").jqGrid('setGridHeight', '225');
-//		$(".ui-jqgrid-titlebar").hide();// no title pls
+	
+	jQuery("#tree")
+	.navGrid('#pager',{edit:true,add:false,del:false,search:true, csv:true})
+	.navButtonAdd('#pager',{
+	   caption:"Export To Excel", 
+//	   buttonicon:"ui-icon-add", 
+	   onClickButton: function(){ 
+		   $("#dialog-confirm").dialog({
+	            height:280,
+	            modal:true,
+	            buttons:{
+	                'Cancel': function(){
+	                    $(this).dialog('close');
+	                },
+	                'Confirm': function(){
+	                	
+	                	jQuery.ajax(
+	           				 {
+	           					 url: _context+"/writeExcel?filePath=C:\\workspace", 
+	           					 success: function(result){
+	           						 alert("Exported Successfuly");
+	           						$(this).dialog('close');
+	           					 }
+	           					 
+	           				 });
+	                }
+	            }
+	        });
+	   }, 
+	   position:"last"
+	});
+	
 }
 
 function populateAdditionalInfo(reqId,reqType){
 	var selRowId = jQuery("#tree").jqGrid('getGridParam', 'selrow');
 	 if(selRowId!=null && selRowId!=""){
-//		 $("#remoteinfinite").jqGrid("clearGridData", true).trigger("reloadGrid");
-//		 var cellValue = jQuery("#tree").jqGrid ('getCell', selRowId, 'routineName');
-//		 var ChildCollection = Backbone.Collection.extend({
-//			 url : function(){
-//			 return _context +"/loadChild?jclProgramName="+cellValue;
-//			 }
-//			 });
-//			 var coll = new ChildCollection();
-//			 
-//			 coll.fetch({
-//				 type: 'GET', contentType : 'application/json',
-//				 success : function() {
-//				 
-//				 
-//				 coll.each(function(clientData, i){
-//						 jQuery("#remoteinfinite").jqGrid('addRowData', (i + 1),
-//						 clientData.toJSON());
-//				 });
-//				 $("#remoteinfinite").trigger("reloadGrid");
-//				 }
-//			 });
-		 
-		 
 		 
 		 var cellValue = jQuery("#tree").jqGrid ('getCell', selRowId, 'id');
 		 $("#remoteinfinite").jqGrid("clearGridData", true).trigger("reloadGrid");
@@ -296,32 +215,6 @@ function populateAdditionalInfo(reqId,reqType){
 					 url: _context+"/loadChild?id="+cellValue, 
 					 success: function(result){
 						  subChildData = result.toString();
-//						 grid = jQuery("#remoteinfinite");
-//							grid.jqGrid({
-//							    datastr: resultSet,
-//							    datatype: "jsonstring",
-//							    height: "auto",
-//							    loadui: "disable",
-//							    colNames: [/*"id",*/"Items","url"],
-//							    colModel: [
-//							        //{name: "id",width:1, hidden:true, key:true},
-//							        {name: "routineName", width:250, resizable: false},
-//							        {name: "url",width:1,hidden:true}
-//							    ],
-//							    treeGrid: true,
-//							    treeGridModel: "adjacency",
-//							    caption: "jqGrid Demos",
-//							    ExpandColumn: "routineName",
-//							    //autowidth: true,
-//							    rowNum: 10000,
-//							    //ExpandColClick: true,
-//							    treeIcons: {leaf:'ui-icon-document-b'},
-//							    jsonReader: {
-//							        repeatitems: false,
-//							        root: "response"
-//							    }
-//							});
-						  // reload Grid for datastr instead of URL value
 						  $("#remoteinfinite").setGridParam({datastr: subChildData,datatype: "jsonstring"}).trigger('reloadGrid');
 						 
 						 

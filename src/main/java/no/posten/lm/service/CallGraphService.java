@@ -120,8 +120,9 @@ public class CallGraphService {
 
 		WritableWorkbook workbook = null;
 		try {
+			String fileLocation = filePath +"/Call_Graph_Final_Output.xls";
 //			 workbook = Workbook.createWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph_output.xls"));
-			 workbook = Workbook.createWorkbook(new File(filePath));
+			 workbook = Workbook.createWorkbook(new File(fileLocation));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

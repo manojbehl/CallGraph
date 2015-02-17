@@ -12,6 +12,12 @@
     <!-- The link to the CSS that the grid needs -->
     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/ui.jqgrid.css" />
     
+    <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/jquery-ui.min.css" />
+    
+    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui.min.js"></script>
+    
+    
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/underscore.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/callGraph.js"></script>
 		<script type="text/javascript"
@@ -35,6 +41,10 @@ var _context = '<%=request.getContextPath()%>';
 			<table id="remoteinfinite"></table>
 	   		 <div id="pager"></div>
 		</div>
+		
+		<div id="dialog-confirm" title="Export to Excel" style="display: none">
+        	<p><span class="ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure want to Export to Excel</p>
+    </div>
 		
 		
 

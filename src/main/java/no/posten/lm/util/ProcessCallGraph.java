@@ -54,7 +54,11 @@ public class ProcessCallGraph {
 		Iterator<String> iterator=  setOfJCLProgram.iterator();
 		WritableWorkbook workbook = null;
 		try {
-			 workbook = Workbook.createWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph_output.xls"));
+			String dir = System.getProperty("user_dir");
+			String filePath = dir + "/Call_Graph_output.xls";
+			 workbook = Workbook.createWorkbook(new File(filePath));
+
+//			 workbook = Workbook.createWorkbook(new File("/Users/manojbehl/Documents/workspace-spring/CallGraph/Call_Graph_output.xls"));
 //			 workbook = Workbook.createWorkbook(new File("C:/workspace/CallGraph/Call_Graph_output.xls"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
