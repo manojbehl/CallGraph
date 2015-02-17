@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
 
 
 
@@ -240,13 +242,13 @@ public class ParseExcel {
 	
 	public Map<String, Map<String, CallGraph>> parseExcelFile(){
 		try {
-			String dir = System.getProperty("user_dir");
+			String dir = System.getProperty("user.dir");
 			String filePath = dir + "/Call_Graph11.xls";
 			Workbook workbook = Workbook.getWorkbook(new File(filePath));
 //			Workbook workbook = Workbook.getWorkbook(new File("C:/workspace/CallGraph/Call_Graph11.xls"));
-			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM1"));
-			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM1"), hashMap);
-			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM1"), hashMap);
+			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM"));
+			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM"), hashMap);
+			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM"), hashMap);
 			return hashMap;
 			
 			
@@ -258,5 +260,9 @@ public class ParseExcel {
 		return null;
 	}
 
+	public static void main(String[] args) {
+		System.err.println(System.getenv("user.dir"));
+		System.err.println(System.getProperty("user.dir"));
+	}
 	
 }

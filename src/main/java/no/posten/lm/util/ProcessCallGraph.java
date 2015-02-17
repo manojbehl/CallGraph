@@ -54,7 +54,7 @@ public class ProcessCallGraph {
 		Iterator<String> iterator=  setOfJCLProgram.iterator();
 		WritableWorkbook workbook = null;
 		try {
-			String dir = System.getProperty("user_dir");
+			String dir = System.getProperty("user.dir");
 			String filePath = dir + "/Call_Graph_output.xls";
 			 workbook = Workbook.createWorkbook(new File(filePath));
 

@@ -103,6 +103,9 @@ public class CallGraphService {
 					callGraph.getChildCallGraph().add(childCallGraph);
 				}else{
 				   CallGraph cg =	hashMap.get(childCallGraph.getParent());
+				   if(cg == null){
+					   System.err.println(childCallGraph.getParent());
+				   }else
 				   cg.getChildCallGraph().add(childCallGraph);
 				}
 				
@@ -111,7 +114,7 @@ public class CallGraphService {
 			
 		}
 		
-		return callGraphList;
+		return collection;
 	}
 	
 	
@@ -196,15 +199,14 @@ public class CallGraphService {
 //				}
 //			}
 			int startRow = row;
-			row = writeChildExcel(childMap, row, col+1, sheet,callGraph);
+			row = writeChildExcel(childMap, row, col+1, sheet);
 			//sheet.mergeCells(startRow, row,1, 1);
-			jclCallGraph.add(callGraph);
 		}
 		workbook.write();
 		workbook.close();
 	}
 	
-	private int writeChildExcel(Collection<CallGraph> childGraphList, Integer row, int col, WritableSheet sheet, CallGraph jclCallGraph) throws RowsExceededException, WriteException{
+	private int writeChildExcel(Collection<CallGraph> childGraphList, Integer row, int col, WritableSheet sheet) throws RowsExceededException, WriteException{
 		Iterator<CallGraph> iterator = childGraphList.iterator();
 		Label label = null;
 		while(iterator.hasNext()){
@@ -225,7 +227,7 @@ public class CallGraphService {
 			label = new Label(col,row++,childSubProgram);
 			sheet.addCell(label);
 			 
-			row = writeChildExcel(child.getChildCallGraph(), row, col+1, sheet,child);
+			row = writeChildExcel(child.getChildCallGraph(), row, col+1, sheet);
 		}
 		return row;
 	}
