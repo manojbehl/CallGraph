@@ -12,8 +12,8 @@
     <!-- The link to the CSS that the grid needs -->
     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/ui.jqgrid.css" />
     
-    <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/jquery-ui.min.css" />
-    
+<%--     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/jquery-ui.min.css" />
+ --%>    
     
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui.min.js"></script>
     
@@ -26,6 +26,12 @@
     <title>Call Graph</title>
 </head>
 <body>
+<style type="css/text">
+	.ui-widget {
+		font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+		font-size: .9em;
+		}
+</style>
 <script type="text/javascript"> 
 var _context = '<%=request.getContextPath()%>';
 	

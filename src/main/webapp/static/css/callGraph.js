@@ -178,7 +178,7 @@ function loadEmptyGrid(){
 //	   buttonicon:"ui-icon-add", 
 	   onClickButton: function(){ 
 		   $("#dialog-confirm").dialog({
-	            height:280,
+	            height:300,
 	            modal:true,
 	            buttons:{
 	                'Cancel': function(){
