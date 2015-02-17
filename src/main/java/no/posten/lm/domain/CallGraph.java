@@ -1,7 +1,9 @@
 package no.posten.lm.domain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +35,7 @@ public class CallGraph {
 	boolean expanded = true;
 	String isLeaf = "false";
 	String type ;
+	boolean subJCL = false;
 	
 	
 	public String getParentRoutineName() {
@@ -217,7 +220,67 @@ public class CallGraph {
 	public void setIsLeaf(String isLeaf) {
 		this.isLeaf = isLeaf;
 	}
-
 	
+	@Override
+	public String toString() {
+		
+		StringBuffer sb = new StringBuffer();
+		boolean subJCL = false;
+		for (Iterator iterator = this.getChildCallGraph().iterator(); iterator.hasNext();) {
+			CallGraph callGraph = (CallGraph) iterator.next();
+			if(callGraph.isSubJCL()){
+				subJCL =true;
+				break;
+				
+			}
+		}
+		if(subJCL){
+			sb.append("\t");
+		}else{
+			sb.append("JCL\t");
+		}
+		sb.append(this.getRoutineName()+"\t");
+		sb.append("\t\t\t");
+		sb.append((this.getFrequency()==null?"":this.getFrequency())+"\t");
+		sb.append((this.getInput()==null?"":this.getInput())+"\t");
+		sb.append((this.getOutput()==null?"":this.getInput())+"\t");
+		sb.append((this.getRemarks()==null?"":this.getRemarks())+"\t");
+		sb.append("\n");
+		addChildElements(this.getChildCallGraph(), sb);
+		return sb.toString();
+	}
+	
+	public void addChildElements(Collection<CallGraph> childCallGraphs,StringBuffer sb){
+		for (Iterator iterator = childCallGraphs.iterator(); iterator.hasNext();) {
+			CallGraph callGraph = (CallGraph) iterator.next();
+			String[] strArray = callGraph.getPath().split("\\.");
+			int length = strArray.length;
+			for (int i = 0; i < length; i++) {
+				sb.append("\t");
+			}
+			if(callGraph.isCodeCopy()){
+				sb.append(callGraph.getRoutineName()+ "- Code Copy" +"\t");
+			}
+			else{
+				sb.append(callGraph.getRoutineName() + "- Sub Program"+"\t");
+
+			}
+			sb.append("\n");
+			addChildElements(callGraph.getChildCallGraph(), sb);
+		}
+	}
+
+	public static void main(String[] args) {
+		String str  = "1.2.3";
+		System.err.println(str.split("\\.").length);
+	}
+
+	public boolean isSubJCL() {
+		return subJCL;
+	}
+
+	public void setSubJCL(boolean subJCL) {
+		this.subJCL = subJCL;
+	}
 	
 }

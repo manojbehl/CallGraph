@@ -177,28 +177,43 @@ function loadEmptyGrid(){
 	.navButtonAdd('#pager',{
 	   caption:"Export To Excel", 
 //	   buttonicon:"ui-icon-add", 
-	   onClickButton: function(){ 
-		   $("#dialog-confirm").dialog({
-	            height:300,
-	            modal:true,
-	            buttons:{
-	                'Cancel': function(){
-	                    $(this).dialog('close');
-	                },
-	                'Confirm': function(){
-	                	
-	                	jQuery.ajax(
-	           				 {
-	           					 url: _context+"/writeExcel?filePath=C:\\workspace", 
-	           					 success: function(result){
-	           						 alert("Exported Successfuly");
-	           						$(this).dialog('close');
-	           					 }
-	           					 
-	           				 });
-	                }
-	            }
-	        });
+	   onClickButton: function(){
+		   window.open((_context+"/writeExcel"), "_blank");
+		   
+		  
+		   
+//		   jQuery.ajax(
+//     				 {
+//     					 url: _context+"/writeExcel", 
+//     					type : "post",
+//     					 mimeType: 'application/vnd.ms-excel',
+//     					 success: function(result){
+//     						 alert("Exported Successfuly");
+//     						$(this).dialog('close');
+//     					 }
+//     					 
+//     				 });
+//		   $("#dialog-confirm").dialog({
+//	            height:300,
+//	            modal:true,
+//	            buttons:{
+//	                'Cancel': function(){
+//	                    $(this).dialog('close');
+//	                },
+//	                'Confirm': function(){
+//	                	
+//	                	jQuery.ajax(
+//	           				 {
+//	           					 url: _context+"/writeExcel?filePath=C:\\workspace", 
+//	           					 success: function(result){
+//	           						 alert("Exported Successfuly");
+//	           						$(this).dialog('close');
+//	           					 }
+//	           					 
+//	           				 });
+//	                }
+//	            }
+//	        });
 	   }, 
 	   position:"last"
 	});

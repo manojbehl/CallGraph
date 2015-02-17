@@ -1,5 +1,7 @@
 package no.posten.lm.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,8 +50,18 @@ public class CallGraphController {
 	
 	@RequestMapping(value="/writeExcel",method=RequestMethod.GET)
 	@ResponseBody
-	public void loadDataWithCallGraph(@RequestParam String filePath){
-		callGraphService.exportToExcel(filePath);
+	public String loadDataWithCallGraph( HttpServletResponse response) throws IOException{
+		String str = callGraphService.exportToExcel();
+		 response.setContentType("application/vnd.ms-excel");
+		 response.setHeader("Expires", "0");
+		 response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+		 response.setHeader("Pragma", "public");
+		 response.setHeader("Content-Disposition", "attachment; filename=final_output.xls");
+		 OutputStream os = response.getOutputStream();
+		 os.write(str.getBytes());
+		 os.flush();
+		 os.close();
+		return str;
 	}
 	
 	@RequestMapping(value="/loadChild",method=RequestMethod.GET)

@@ -22,6 +22,7 @@ import jxl.write.biff.RowsExceededException;
 import no.posten.lm.dao.CallGraphDAO;
 import no.posten.lm.domain.CallGraph;
 import no.posten.lm.dto.CallGraphDTO;
+import no.posten.lm.transform.DTOTODomainTransformer;
 import no.posten.lm.transform.DomainToDTOTransformer;
 import no.posten.lm.util.FormattingCallGraph;
 import no.posten.lm.util.ParseExcel;
@@ -42,6 +43,9 @@ public class CallGraphService {
 	
 	@Autowired
 	DomainToDTOTransformer domainToDTOTransformer;
+	
+	@Autowired
+	DTOTODomainTransformer dtoToDomainTransfomer;
 	
 	@Autowired
 	FormattingCallGraph formattingCallGraph;
@@ -68,18 +72,31 @@ public class CallGraphService {
 		callGraphDAO.update(callGraphDTO);
 	}
 	
-	public void exportToExcel(String filePath){
+	public void insertNewGraph(CallGraphDTO callGraphDTO){
+		callGraphDAO.insertNewCallGrapoh(dtoToDomainTransfomer.transform(callGraphDTO, new CallGraph()));
+	}
+	
+	public String exportToExcel(){
 
 		Collection<CallGraph> allCallGraphObjects = callGraphDAO.getParentChildGraphs();
-		try {
-			writeExcel(filePath, prepareCallGraphHierarchy(allCallGraphObjects));
-		} catch (WriteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		StringBuffer sb = new StringBuffer();
+		sb.append("Type\tJCL\tProgram1\tProgram2\tProgram3\tFrequency\tInput\tOutput\tRemarks\n");
+		Collection< CallGraph> callGraphs = prepareCallGraphHierarchy(allCallGraphObjects);
+		for (Iterator iterator = callGraphs.iterator(); iterator
+				.hasNext();) {
+			CallGraph callGraph = (CallGraph) iterator.next();
+			sb.append(callGraph.toString());
 		}
+		return sb.toString();
+//		try {
+//			writeExcel(filePath, prepareCallGraphHierarchy(allCallGraphObjects));
+//		} catch (WriteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 	}
 	

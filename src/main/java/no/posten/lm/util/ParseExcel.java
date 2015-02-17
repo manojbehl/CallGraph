@@ -150,10 +150,12 @@ public class ParseExcel {
 				}
 					if(!this.parentCallGraph.contains(cellView[0].getContents().trim().toString())){
 						CallGraph callGraph = new CallGraph();
+						
 						callGraph.setRoutineName(cellView[0].getContents().trim().toString());
 						
 						CallGraph innerSubCallGraph = new CallGraph();
 						innerSubCallGraph .setRoutineName(cellView[0].getContents().trim().toString());
+						innerSubCallGraph.setSubJCL(true);
 						
 						callGraph.getChildRoutine().put(innerSubCallGraph.getRoutineName(), innerSubCallGraph);
 						

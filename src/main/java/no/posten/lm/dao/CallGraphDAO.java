@@ -47,6 +47,10 @@ public class CallGraphDAO {
 		
 	}
 	
+	public void insertNewCallGrapoh(CallGraph callGraph){
+		mongoTemplate.insert(callGraph);
+	}
+	
 	public Collection<CallGraph> getParentChildGraphs(){
 		String str = "{parent:\"\", type:\"JCL\"}";
 		BasicQuery basicQuery = new BasicQuery(str);
