@@ -64,4 +64,55 @@ public class FormattingCallGraph {
 		}
 	}
 	
+	
+	public  Collection<CallGraph> rearrangeCallGraphParents(Collection<CallGraph> unorganisedCallGraphList){
+		Collection<CallGraph> formattedCallGraphList = new ArrayList<CallGraph>();
+		CallGraph formattedCallGraph =null;
+		counter=0;
+		for (Iterator iterator = unorganisedCallGraphList.iterator(); iterator
+				.hasNext();) {
+			CallGraph callGraph = (CallGraph) iterator.next();
+			formattedCallGraph = new CallGraph();
+			BeanUtils.copyProperties(callGraph, formattedCallGraph, new String[]{"childCallGraph","childRoutine","id"});
+			formattedCallGraph.setId(callGraph.getRoutineName() );
+			formattedCallGraph.setPath(formattedCallGraph.getId());
+			formattedCallGraph.setLevel(0);
+			formattedCallGraph.setType("JCL");
+			formattedCallGraph.setParentRoutineName("");
+//			counter = counter +1;
+			
+			
+			parseChildRecords(formattedCallGraph, callGraph.getChildCallGraph(),1);
+			formattedCallGraphList.add(formattedCallGraph);
+			
+		}
+		return formattedCallGraphList;
+	}
+	
+	
+	private void parseChildRecords(CallGraph parentCallGraph, Collection<CallGraph> childCallGraphList,int level){
+		CallGraph formattedCallGraph =null;
+		for (Iterator iterator = childCallGraphList.iterator(); iterator
+				.hasNext();) {
+			
+			logger.log(Level.INFO, "counter is :"+counter);
+			CallGraph childCallGraph = (CallGraph) iterator.next();
+			formattedCallGraph = new CallGraph();
+			BeanUtils.copyProperties(childCallGraph, formattedCallGraph, new String[]{"childCallGraph","childRoutine","id"});
+			formattedCallGraph.setId(childCallGraph.getRoutineName() + "_SUB");
+			formattedCallGraph.setPath(parentCallGraph.getPath() + CallGraph.PATH_SEPARATOR + formattedCallGraph.getId());
+			formattedCallGraph.setParent(parentCallGraph.getId());
+			formattedCallGraph.setLevel(level);
+			formattedCallGraph.setType("SUB");
+			formattedCallGraph.setParentRoutineName(parentCallGraph.getRoutineName());
+//			counter = counter +1;
+			
+			if(childCallGraph.getChildCallGraph().size() == 0)
+				formattedCallGraph.setIsLeaf("true");
+			
+			parentCallGraph.getChildCallGraph().add(formattedCallGraph);
+			parseChildRecords(formattedCallGraph, childCallGraph.getChildCallGraph(),level+1);
+		}
+	}
+	
 }

@@ -248,9 +248,9 @@ public class ParseExcel {
 			String filePath = dir + "/Call_Graph11.xls";
 			Workbook workbook = Workbook.getWorkbook(new File(filePath));
 //			Workbook workbook = Workbook.getWorkbook(new File("C:/workspace/CallGraph/Call_Graph11.xls"));
-			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM"));
-			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM"), hashMap);
-			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM"), hashMap);
+			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM1"));
+			hashMap = getPGM2PGMList( workbook.getSheet("PGM2PGM1"), hashMap);
+			hashMap = getCPYtoPGMList(workbook.getSheet("CPY2PGM1"), hashMap);
 			return hashMap;
 			
 			

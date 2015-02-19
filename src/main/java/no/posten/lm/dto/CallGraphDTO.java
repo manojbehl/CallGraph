@@ -1,6 +1,8 @@
 package no.posten.lm.dto;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import no.posten.lm.domain.CallGraph;
@@ -136,15 +138,17 @@ public class CallGraphDTO implements Comparable<CallGraphDTO>{
 	}
 	public int compareTo(CallGraphDTO o) {
 		// TODO Auto-generated method stub
-		Integer first = Integer.parseInt(this.getId());
-		Integer second = Integer.parseInt(o.getId());
-		if(first < second)
-			return -1;
-		else if (first > second)
-			return 1;
-		else 
-			return 0;
+//		Integer first = Integer.parseInt(this.getId());
+//		Integer second = Integer.parseInt(o.getId());
+//		if(first < second)
+//			return -1;
+//		else if (first > second)
+//			return 1;
+//		else 
+//			return 0;
+		return this.getId().compareTo(o.getId());
 		}
+	
 	public int getPage() {
 		return page;
 	}
@@ -162,6 +166,44 @@ public class CallGraphDTO implements Comparable<CallGraphDTO>{
 	}
 	public void setTotal(int total) {
 		this.total = total;
+	}
+	
+	public String createTreeResponse(){
+		StringBuffer sb= new StringBuffer();
+		sb.append("{\"response\": [");
+		populateTreeData(this, sb);
+		sb.append("]}");
+		return sb.toString();
+	}
+	
+	private String populateTreeData(CallGraphDTO mainObject,StringBuffer sb){
+		
+		loadEntries(sb, mainObject);
+		Collection<CallGraphDTO> callGraphDTOs = mainObject.getChildCallGraph();
+		for (Iterator iterator = callGraphDTOs.iterator(); iterator.hasNext();) {
+			CallGraphDTO type = (CallGraphDTO) iterator.next();
+			populateTreeData(type, sb);
+			
+		} ;
+		return sb.toString();
+	}
+	
+	private void loadEntries(StringBuffer sb, CallGraphDTO mainObject){
+		sb.append("{");
+		sb.append("\"id\":\""+mainObject.getId()+"\",");
+		sb.append("\"routineName\":\""+mainObject.getRoutineName()+"\",");
+		sb.append("\"frequency\":\""+(mainObject.getFrequency()==null?"":mainObject.getFrequency())+"\",");
+		sb.append("\"input\":\""+(mainObject.getInput()==null?"":mainObject.getInput())+"\",");
+		sb.append("\"output\":\""+(mainObject.getOutput()==null?"":mainObject.getOutput())+"\",");
+		sb.append("\"remarks\":\""+(mainObject.getRemarks()==null?"":mainObject.getRemarks())+"\",");
+		
+		
+		sb.append("level:\""+mainObject.getLevel()+"\",");
+		sb.append("parent:\""+mainObject.getParent()+"\",");
+		sb.append("isLeaf:"+mainObject.getIsLeaf().equalsIgnoreCase("true")+",");
+		sb.append("expanded:"+mainObject.isExpanded()+",");
+		sb.append("loaded:"+mainObject.isLoaded());
+		sb.append("},");
 	}
 	
 	

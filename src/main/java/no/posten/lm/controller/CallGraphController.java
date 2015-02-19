@@ -7,12 +7,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import no.posten.lm.dto.CallGraphDTO;
 import no.posten.lm.service.CallGraphService;
+import no.posten.lm.util.FormattingCallGraph;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class CallGraphController {
 
 	@Autowired
 	CallGraphService callGraphService;
+	
+	Logger logger = Logger.getLogger(FormattingCallGraph.class.getName());
 	
 	@RequestMapping(value="/populate", method=RequestMethod.GET)
 	@ResponseBody
@@ -83,12 +87,13 @@ public class CallGraphController {
 		
 //		Collection<CallGraphDTO> finalizeCallGraphDTOs = new ArrayList<CallGraphDTO>();
 //		return breakupChildIntoSeperateRecords(((ArrayList<CallGraphDTO>)callGraphCollection).get(index).getChildCallGraph(),finalizeCallGraphDTOs);
-		StringBuffer sb= new StringBuffer();
-		sb.append("{\"response\": [");
-		populateTreeData(mainObject, sb);
-		sb.append("]}");
-		return sb.toString();
-		
+//		StringBuffer sb= new StringBuffer();
+//		sb.append("{\"response\": [");
+//		populateTreeData(mainObject, sb);
+//		sb.append("]}");
+		String string =  mainObject.createTreeResponse();
+		logger.info(string);
+		return string;
 		
 	}
 	

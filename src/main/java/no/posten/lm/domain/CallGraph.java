@@ -68,7 +68,7 @@ public class CallGraph {
 	@Transient
 	Map<String, CallGraph> childRoutine = new HashMap<String, CallGraph>();
 	
-	@Transient
+	
 	private Set<CallGraph> childCallGraph = new HashSet<CallGraph>();
 	
 	public Set<CallGraph> getChildCallGraph() {

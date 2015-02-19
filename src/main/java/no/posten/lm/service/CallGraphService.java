@@ -53,7 +53,7 @@ public class CallGraphService {
 	public void populateCallGraph(){
 		processCallGraph.getListOfJCLProgram();
 		
-		callGraphDAO.InsertData(formattingCallGraph.formatCallGraphCollection(processCallGraph.getJclCallGraph()));
+		callGraphDAO.InsertData(formattingCallGraph.rearrangeCallGraphParents(processCallGraph.getJclCallGraph()));
 //		Collection<CallGraph> listOfCACallGraphs = callGraphDAO.getListOfAllRecords();
 //		System.err.println(listOfCACallGraphs.size());
 	}

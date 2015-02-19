@@ -31,11 +31,11 @@ public class CallGraphDAO {
 	public void InsertData(Collection<CallGraph> callGraphObList){
 		for (Iterator iterator = callGraphObList.iterator(); iterator.hasNext();) {
 			CallGraph callGraph = (CallGraph) iterator.next();
-			String str = "{routineName:\"" + callGraph.getRoutineName() + "\", type:\""+ callGraph.getType() + "\", parentRoutineName:\""+ callGraph.getParentRoutineName() +"\"}";
-			BasicQuery basicQuery = new BasicQuery(str);
-			CallGraph exsitingCallGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
-			if(exsitingCallGraph == null )
-				mongoTemplate.insert(callGraph);
+//			String str = "{routineName:\"" + callGraph.getRoutineName() + "\", type:\""+ callGraph.getType() + "\", parentRoutineName:\""+ callGraph.getParentRoutineName() +"\"}";
+//			BasicQuery basicQuery = new BasicQuery(str);
+//			CallGraph exsitingCallGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
+//			if(exsitingCallGraph == null )
+				mongoTemplate.save(callGraph);
 		}
 //		mongoTemplate.insertAll(callGraphObList);
 //		for (Iterator iterator = callGraphObList.iterator(); iterator.hasNext();) {
