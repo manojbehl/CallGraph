@@ -31,9 +31,11 @@ public class CallGraphDAO {
 	public void InsertData(Collection<CallGraph> callGraphObList){
 		for (Iterator iterator = callGraphObList.iterator(); iterator.hasNext();) {
 			CallGraph callGraph = (CallGraph) iterator.next();
-//			String str = "{routineName:\"" + callGraph.getRoutineName() + "\", type:\""+ callGraph.getType() + "\", parentRoutineName:\""+ callGraph.getParentRoutineName() +"\"}";
-//			BasicQuery basicQuery = new BasicQuery(str);
-//			CallGraph exsitingCallGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
+			String str = "{_id:\"" + callGraph.getRoutineName() + "\"}";
+			BasicQuery basicQuery = new BasicQuery(str);
+			CallGraph exsitingGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
+			BeanUtils.copyProperties(exsitingGraph, callGraph, new String[]{"childCallGraph"});
+			
 //			if(exsitingCallGraph == null )
 				mongoTemplate.save(callGraph);
 		}
