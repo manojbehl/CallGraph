@@ -34,6 +34,7 @@ public class CallGraphDAO {
 			String str = "{_id:\"" + callGraph.getRoutineName() + "\"}";
 			BasicQuery basicQuery = new BasicQuery(str);
 			CallGraph exsitingGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
+			if(exsitingGraph != null)
 			BeanUtils.copyProperties(exsitingGraph, callGraph, new String[]{"childCallGraph"});
 			
 //			if(exsitingCallGraph == null )
@@ -88,7 +89,7 @@ public class CallGraphDAO {
 		String str = "{_id:\"" + callGraphDTO.getId() + "\"}";
 		BasicQuery basicQuery = new BasicQuery(str);
 		CallGraph callGraph = mongoTemplate.findOne(basicQuery, CallGraph.class);
-		BeanUtils.copyProperties(callGraphDTO, callGraph);
+		BeanUtils.copyProperties(callGraphDTO, callGraph, new String[]{"childCallGraph"});
 		mongoTemplate.save(callGraph);
 		
 	}

@@ -35,9 +35,9 @@ public class ProcessCallGraph {
 		this.jclCallGraph = jclCallGraph;
 	}
 
-	public Map<String, Map<String, CallGraph>> getListOfJCLProgram(){
+	public Map<String, Map<String, CallGraph>> getListOfJCLProgram(String filePath){
 //		if(hashMap == null){
-			hashMap= ParseExcel.getSharedInstance().parseExcelFile();
+			hashMap= ParseExcel.getSharedInstance().parseExcelFile(filePath);
 				
 //		}
 		try {

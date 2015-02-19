@@ -34,9 +34,9 @@ public class CallGraphController {
 	
 	@RequestMapping(value="/populate", method=RequestMethod.GET)
 	@ResponseBody
-	public String populateDataWithCallGraph(){
+	public String populateDataWithCallGraph(@RequestParam(required=false) String filePath){
 		
-		callGraphService.populateCallGraph();
+		callGraphService.populateCallGraph(filePath);
 		return "success";
 	}
 	

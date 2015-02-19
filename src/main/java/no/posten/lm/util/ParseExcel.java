@@ -1,6 +1,7 @@
 package no.posten.lm.util;
 
 import java.io.File;
+import java.io.FilePermission;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
 
 
 
@@ -242,10 +244,13 @@ public class ParseExcel {
 		return hashMap;
 	}
 	
-	public Map<String, Map<String, CallGraph>> parseExcelFile(){
+	public Map<String, Map<String, CallGraph>> parseExcelFile(String filePath){
 		try {
-			String dir = System.getProperty("user.dir");
-			String filePath = dir + "/Call_Graph11.xls";
+			if(filePath == null || filePath.trim().length() == 0){
+				String dir = System.getProperty("user.dir");
+				 filePath = dir + "/Call_Graph11.xls";
+			}
+			
 			Workbook workbook = Workbook.getWorkbook(new File(filePath));
 //			Workbook workbook = Workbook.getWorkbook(new File("C:/workspace/CallGraph/Call_Graph11.xls"));
 			Map<String, Map<String, CallGraph>> hashMap = getJCLToPGMList( workbook.getSheet("JCL2PGM1"));

@@ -50,8 +50,8 @@ public class CallGraphService {
 	@Autowired
 	FormattingCallGraph formattingCallGraph;
 	
-	public void populateCallGraph(){
-		processCallGraph.getListOfJCLProgram();
+	public void populateCallGraph(String filePath){
+		processCallGraph.getListOfJCLProgram(filePath);
 		
 		callGraphDAO.InsertData(formattingCallGraph.rearrangeCallGraphParents(processCallGraph.getJclCallGraph()));
 //		Collection<CallGraph> listOfCACallGraphs = callGraphDAO.getListOfAllRecords();
