@@ -23,7 +23,7 @@ function loadDummyTable(){
 		    ],
 		    treeGrid: true,
 		    treeGridModel: "adjacency",
-		    caption: "jqGrid Demos",
+		    caption: "Child Graph Tree",
 		    ExpandColumn: "routineName",
 		    //autowidth: true,
 		    rowNum: 10000,
@@ -37,8 +37,8 @@ function loadDummyTable(){
 		    }
 		});
 		
-		jQuery("#remoteinfinite")
-		.navGrid('#pager',{edit:true,add:true,del:false,search:false, csv:true})
+//		jQuery("#remoteinfinite")
+//		.navGrid('#pager',{edit:true,add:true,del:false,search:false, csv:true})
 }
 
 
@@ -122,14 +122,7 @@ function loadEmptyGrid(){
 				"width":100,
 				editable:true
 			},
-			{
-				"name":"act",
-				"index":"act",
-				sortable:false,
-				"label":"Actions",
-				"width":100,
-				
-			}
+		
 			 
 		],
 		"width":"780",
@@ -140,7 +133,7 @@ function loadEmptyGrid(){
 		"editurl" :"/CallGraph//update",
 		"addurl":"/CallGraph/add",
 		"ExpandColumn":"name",
-		"height":"300",
+		"height":"150",
 		"sortname":"routineName",
 		"scrollrows":true,
 		"scroll":true,
@@ -169,7 +162,7 @@ function loadEmptyGrid(){
 			} ,
 		"datatype":"json",
 		"pager":"#pager",
-		caption: "Full control",
+		caption: "LM JCL Program",
 		onSelectRow : function(e) {
 			populateAdditionalInfo(null,null);
 		}
@@ -182,50 +175,91 @@ function loadEmptyGrid(){
 	jQuery("#tree")
 	.navGrid('#pager',{edit:true,add:true,del:false,search:true, csv:true})
 	.navButtonAdd('#pager',{
-	   caption:"Export To Excel", 
+	   caption:"Export", 
 //	   buttonicon:"ui-icon-add", 
 	   onClickButton: function(){
 		   window.open((_context+"/writeExcel"), "_blank");
 		   
 		  
 		   
-//		   jQuery.ajax(
-//     				 {
-//     					 url: _context+"/writeExcel", 
-//     					type : "post",
-//     					 mimeType: 'application/vnd.ms-excel',
-//     					 success: function(result){
-//     						 alert("Exported Successfuly");
-//     						$(this).dialog('close');
-//     					 }
-//     					 
-//     				 });
-//		   $("#dialog-confirm").dialog({
-//	            height:300,
-//	            modal:true,
-//	            buttons:{
-//	                'Cancel': function(){
-//	                    $(this).dialog('close');
-//	                },
-//	                'Confirm': function(){
-//	                	
-//	                	jQuery.ajax(
-//	           				 {
-//	           					 url: _context+"/writeExcel?filePath=C:\\workspace", 
-//	           					 success: function(result){
-//	           						 alert("Exported Successfuly");
-//	           						$(this).dialog('close');
-//	           					 }
-//	           					 
-//	           				 });
-//	                }
-//	            }
-//	        });
+
+	   }, 
+	 
+	})
+	.navButtonAdd('#pager',{
+	   caption:"Reload", 
+//	   buttonicon:"ui-icon-add", 
+	   onClickButton: function(){
+		   $("#dialog-confirm").dialog({
+			 height:300,
+			 modal:true,
+			 buttons:{
+			 'Cancel': function(){
+			    $(this).dialog('close');
+			 },
+			 'Confirm': function(){
+				 $(this).dialog('close');
+				 $.blockUI({message:"Loading... New Records"});
+			 	jQuery.ajax(
+			 			 {
+			 				 url: _context+"/populate?filePath="+$('#filePath').val(), 
+			 				 success: function(result){
+			 					$("#tree").trigger("reloadGrid");
+			 					 $("#remoteinfinite").setGridParam({datastr: null,datatype: "jsonstring"}).trigger('reloadGrid');
+			 					 $.unblockUI();
+			 				 }
+			 			 		
+			 			 });
+			 }}});
+		   
+		  
+		   
+
 	   }, 
 	   position:"last"
-	});
+	})
+	
+	
+	
+	;
 	
 }
+
+
+
+
+//jQuery.ajax(
+// {
+//	 url: _context+"/writeExcel", 
+//	type : "post",
+//	 mimeType: 'application/vnd.ms-excel',
+//	 success: function(result){
+//		 alert("Exported Successfuly");
+//		$(this).dialog('close');
+//	 }
+//	 
+// });
+//$("#dialog-confirm").dialog({
+//height:300,
+//modal:true,
+//buttons:{
+//'Cancel': function(){
+//   $(this).dialog('close');
+//},
+//'Confirm': function(){
+//	
+//	jQuery.ajax(
+//			 {
+//				 url: _context+"/writeExcel?filePath=C:\\workspace", 
+//				 success: function(result){
+//					 alert("Exported Successfuly");
+//					$(this).dialog('close');
+//				 }
+//				 
+//			 });
+//}
+//}
+//});
 
 function populateAdditionalInfo(reqId,reqType){
 	var selRowId = jQuery("#tree").jqGrid('getGridParam', 'selrow');
