@@ -205,7 +205,9 @@ function loadEmptyGrid(){
 			 				 url: _context+"/populate?filePath="+$('#filePath').val(), 
 			 				 success: function(result){
 			 					$("#tree").trigger("reloadGrid");
-			 					 $("#remoteinfinite").setGridParam({datastr: null,datatype: "jsonstring"}).trigger('reloadGrid');
+			 					subChildData =null;
+//			 					 $("#remoteinfinite").setGridParam({datastr: "",datatype: "jsonstring"}).trigger('reloadGrid');
+			 					$("#remoteinfinite").trigger('reloadGrid');
 			 					 $.unblockUI();
 			 				 }
 			 			 		
